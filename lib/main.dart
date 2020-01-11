@@ -150,7 +150,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                         headers: headers);
                     print(resp.statusCode);
 
-                    _usuariosList
+                    _dadosList
                         .clear(); //Limpa a lista de usuários para impedir de Fenviar mais de um
 
                     if (resp.statusCode == 200) {
