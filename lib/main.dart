@@ -6,7 +6,8 @@ import 'package:flutter/services.dart';
 //import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
-/teste
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
 void main() {
   runApp(MaterialApp(
     home: Pedidos(),
@@ -22,6 +23,9 @@ class Pedidos extends StatefulWidget {
 final FocusNode _secondInputFocusNode = new FocusNode();
 final FocusNode _placaInputFocusNode = new FocusNode();
 final FocusNode _boxInputFocusNode = new FocusNode();
+String dropdownValue = "BOX";
+var maskFormatter = new MaskTextInputFormatter(
+    mask: '###-####', filter: {"#": RegExp(r'[0-9A-Z]')});
 
 class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
   TabController _tabController;
@@ -75,7 +79,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
   void _enviar() {
     if ((_usuarioController.text.isEmpty) ||
         (_placaController.text.isEmpty) ||
-        (_boxController.text.isEmpty)) {
+        (dropdownValue == "BOX")) {
       Toast.show(
         "\n  Preencha todos os campos  \n",
         context,
@@ -133,7 +137,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                     // _dadosList.add(newDados);
                     newDados["placa"] = _placaController.text.trimLeft();
                     //_dadosList.add(newDados);
-                    newDados["box"] = _boxController.text.trimLeft();
+                    newDados["box"] = dropdownValue;
                     _dadosList.add(newDados);
 
                     // _saveData();
@@ -272,9 +276,13 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                 Expanded(
                   flex: 8,
                   child: TextFormField(
+                    textCapitalization: TextCapitalization.characters,
                     inputFormatters: [
-                      new BlacklistingTextInputFormatter(new RegExp('[ ]'))
+                      maskFormatter,
+                      //WhitelistingTextInputFormatter(RegExp("[a-zA-Z0-9-]")),
+                      //new BlacklistingTextInputFormatter(new RegExp('[ ]'))
                     ],
+                    maxLength: 8,
                     focusNode: _placaInputFocusNode,
                     controller: _placaController,
                     keyboardType: TextInputType.text,
@@ -299,28 +307,91 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
               children: <Widget>[
                 Expanded(
                   flex: 8,
-                  child: TextFormField(
-                    inputFormatters: [
-                      new BlacklistingTextInputFormatter(new RegExp('[ ]'))
-                    ],
-                    controller: _boxController,
-                    focusNode: _boxInputFocusNode,
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                    onEditingComplete: () => FocusScope.of(context)
-                        .requestFocus(_secondInputFocusNode),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
+                  child: DropdownButton<String>(
+                    value: dropdownValue,
+
+                    //icon: Icon(Icons.arrow_downward),
+                    iconSize: 34,
+                    elevation: 16,
+                    hint: Text("BOX"),
+
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
                     ),
-                    decoration: InputDecoration(
-                      hintText: ("Box"),
-                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue = newValue;
+                      });
+                    },
+                    items: <String>[
+                      'BOX',
+                      '01',
+                      '02',
+                      '03',
+                      '04',
+                      '05',
+                      '06',
+                      '07',
+                      '08',
+                      '09',
+                      '10',
+                      '11',
+                      '12',
+                      '13',
+                      '14',
+                      '15',
+                      '16',
+                      '17',
+                      '18',
+                      '19',
+                      '20',
+                      '21',
+                      '22',
+                      '23',
+                      '24'
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
                 ),
               ],
             ),
           ),
+
+// Padding(
+//             padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+//             child: Row(
+//               children: <Widget>[
+//                 Expanded(
+//                   flex: 8,
+//                   child: TextFormField(
+//                     inputFormatters: [
+//                       new BlacklistingTextInputFormatter(new RegExp('[ ]'))
+//                     ],
+//                     controller: _boxController,
+//                     focusNode: _boxInputFocusNode,
+//                     keyboardType: TextInputType.text,
+//                     textInputAction: TextInputAction.next,
+//                     onEditingComplete: () => FocusScope.of(context)
+//                         .requestFocus(_secondInputFocusNode),
+//                     style: TextStyle(
+//                       color: Colors.black,
+//                       fontSize: 18,
+//                     ),
+//                     decoration: InputDecoration(
+//                       hintText: ("Box"),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
