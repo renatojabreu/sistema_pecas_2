@@ -163,6 +163,9 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                         setState(() {
                           print(_pecasList);
                           _pecasList.clear();
+                          _placaController.clear();
+                          dropdownValue = "BOX";
+
                           Navigator.of(context).pop();
                         });
                       } else {
@@ -184,20 +187,20 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                       }
                     } else {
                       print("erro de comunicação");
-                      // Navigator.of(context).pop();
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (BuildContext context) {
-                      //       return AlertDialog(
-                      //           title: new Text("Erro de comunicação."),
-                      //           actions: <Widget>[
-                      //             new FlatButton(
-                      //                 child: new Text("Fechar"),
-                      //                 onPressed: () {
-                      //                   Navigator.of(context).pop();
-                      //                 }),
-                      //           ]);
-                      //     });
+                      Navigator.of(context).pop();
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                                title: new Text("Erro de comunicação."),
+                                actions: <Widget>[
+                                  new FlatButton(
+                                      child: new Text("Fechar"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      }),
+                                ]);
+                          });
                     }
                   })
             ],
@@ -310,16 +313,15 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                   flex: 8,
                   child: DropdownButton<String>(
                     value: dropdownValue,
-
+                    focusNode: _boxInputFocusNode,
                     //icon: Icon(Icons.arrow_downward),
-                    iconSize: 34,
+                    //iconSize: 34,
                     elevation: 16,
                     hint: Text("BOX"),
-
                     style: TextStyle(color: Colors.black, fontSize: 18),
                     underline: Container(
                       height: 2,
-                      color: Colors.deepPurpleAccent,
+                      color: Colors.grey[400],
                     ),
                     onChanged: (String newValue) {
                       setState(() {
