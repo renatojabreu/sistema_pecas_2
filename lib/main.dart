@@ -14,7 +14,6 @@ void main() {
     debugShowCheckedModeBanner: false,
   ));
 }
-//Ok sem dropdown
 
 class Pedidos extends StatefulWidget {
   @override
@@ -144,12 +143,23 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                     // _saveData();
                     print(_pecasList + _dadosList);
 
+                    // Map<String, String> newPeca = Map<String, String>();
+                    // int i = 0;
+                    // int j = _pecasList.length;
+                    // for (i = 0; i == j; i++) {
+                    //   newPeca["title"] += _pecasList[i];
+                    // }
+
+                    // print(_pecasList);
+
                     Map<String, String> headers = new Map<String, String>();
                     headers["Content-type"] = "application/json";
                     headers["Accept"] = "application/json";
                     //String str = '{"take":55, "skip":"0"}';
                     final resp = await http.post(
                         'http://webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2',
+                        //'http://172.16.14.109:5000/',
+                        //
                         body: jsonEncode(_dadosList +
                             _pecasList), //+ jsonEncode(_pecasList),
                         headers: headers);
@@ -162,9 +172,9 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                       if (resp.body == "ok") {
                         setState(() {
                           print(_pecasList);
-                          _pecasList.clear();
-                          _placaController.clear();
-                          dropdownValue = "BOX";
+                          // _pecasList.clear();
+                          // _placaController.clear();
+                          //dropdownValue = "BOX";
 
                           Navigator.of(context).pop();
                         });
