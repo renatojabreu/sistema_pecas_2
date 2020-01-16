@@ -45,18 +45,23 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
     _tabController = new TabController(length: 3, vsync: this);
   }
 
+  Map<String, String> newPeca = Map();
+
   void _addPecas() {
+    int pos = _pecasList.length + 1;
+    String pos1 = pos.toString();
+    String title = ("title" + pos1);
+    print(title + "RESULTADO");
     //disableTextFormField();
     if ((_pecasController.text.isEmpty) ||
         ((_pecasController.text.trimLeft() == ("")))) {
       print("Campo Vazio");
     } else {
       setState(() {
-        Map<String, dynamic> newPeca = Map();
-        newPeca["title"] = _pecasController.text.trimLeft();
+        newPeca[title] = _pecasController.text.trimLeft();
         //newPeca["ok"] = false;
         _pecasController.text = "";
-        _pecasList.add(newPeca);
+        _pecasList.add(newPeca[pos]);
         // _saveData();
         print(_pecasList);
       });
@@ -158,8 +163,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                     //String str = '{"take":55, "skip":"0"}';
                     final resp = await http.post(
                         //'http://webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2',
-                        //'http://172.16.14.109:5000/',
-                        'http://177.125.217.10:6598/',
+                        'http://172.16.14.109:5000/',
                         //
                         body: jsonEncode(_dadosList +
                             _pecasList), //+ jsonEncode(_pecasList),
@@ -168,14 +172,14 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
 
                     _dadosList
                         .clear(); //Limpa a lista de usuários para impedir de Fenviar mais de um
-                    print(resp.body);
+
                     if (resp.statusCode == 200) {
                       if (resp.body == "ok") {
                         setState(() {
                           print(_pecasList);
-                          _pecasList.clear();
-                          _placaController.clear();
-                          dropdownValue = "BOX";
+                          // _pecasList.clear();
+                          // _placaController.clear();
+                          //dropdownValue = "BOX";
 
                           Navigator.of(context).pop();
                         });
@@ -248,7 +252,6 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
           title: Text(
             "Solicitação de Peças",
@@ -457,7 +460,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                     dense: true,
                     key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
                     title: Text(
-                      _pecasList[index]["title"],
+                      _pecasList[index]["pos1"],
                       style: TextStyle(fontSize: 16.0),
                     ),
                     trailing: GestureDetector(
