@@ -24,6 +24,7 @@ final FocusNode _secondInputFocusNode = new FocusNode();
 final FocusNode _placaInputFocusNode = new FocusNode();
 final FocusNode _boxInputFocusNode = new FocusNode();
 String dropdownValue = "BOX";
+String dropdownValue1 = "Tipo de Veículo";
 var maskFormatter = new MaskTextInputFormatter(
     mask: '###-####', filter: {"#": RegExp(r'[0-9A-Z]')});
 
@@ -50,6 +51,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
     if ((_pecasController.text.isEmpty) ||
         ((_pecasController.text.trimLeft() == ("")))) {
       print("Campo Vazio");
+      FocusScope.of(context).unfocus();
     } else {
       setState(() {
         Map<String, dynamic> newPeca = Map();
@@ -79,7 +81,8 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
   void _enviar() {
     if ((_usuarioController.text.isEmpty) ||
         (_placaController.text.isEmpty) ||
-        (dropdownValue == "BOX")) {
+        (dropdownValue == "BOX") ||
+        (dropdownValue1 == "Tipo de Veículo")) {
       Toast.show(
         "\n  Preencha todos os campos  \n",
         context,
@@ -138,6 +141,8 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                     newDados["placa"] = _placaController.text.trimLeft();
                     //_dadosList.add(newDados);
                     newDados["box"] = dropdownValue;
+                    // _dadosList.add(newDados);
+                    newDados["tipo_veiculo"] = dropdownValue1;
                     _dadosList.add(newDados);
 
                     // _saveData();
@@ -159,7 +164,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                     final resp = await http.post(
                         //'http://webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2',
                         //'http://172.16.14.109:5000/',
-                        'http://177.125.217.10:6598/',
+                        'http://177.125.217.10:6598/', //IP CERTO
                         //
                         body: jsonEncode(_dadosList +
                             _pecasList), //+ jsonEncode(_pecasList),
@@ -176,6 +181,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                           _pecasList.clear();
                           _placaController.clear();
                           dropdownValue = "BOX";
+                          dropdownValue1 = "Tipo de Veículo";
 
                           Navigator.of(context).pop();
                         });
@@ -318,62 +324,109 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(12.0, 0.0, 8.0, 0.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(
-                  flex: 8,
-                  child: DropdownButton<String>(
-                    value: dropdownValue,
-                    focusNode: _boxInputFocusNode,
-                    //icon: Icon(Icons.arrow_downward),
-                    //iconSize: 34,
-                    elevation: 16,
-                    hint: Text("BOX"),
-                    style: TextStyle(color: Colors.black, fontSize: 18),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.grey[400],
+                Column(
+                  children: <Widget>[
+                    Container(
+                      width: 150.0,
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: dropdownValue,
+                        focusNode: _boxInputFocusNode,
+                        //icon: Icon(Icons.arrow_downward),
+                        //iconSize: 34,
+                        elevation: 16,
+                        hint: Text("BOX"),
+                        style: TextStyle(color: Colors.black, fontSize: 18),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.grey[400],
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropdownValue = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'BOX',
+                          '01',
+                          '02',
+                          '03',
+                          '04',
+                          '05',
+                          '06',
+                          '07',
+                          '08',
+                          '09',
+                          '10',
+                          '11',
+                          '12',
+                          '13',
+                          '14',
+                          '15',
+                          '16',
+                          '17',
+                          '18',
+                          '19',
+                          '20',
+                          '21',
+                          '22',
+                          '23',
+                          '24'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                     ),
-                    onChanged: (String newValue) {
-                      setState(() {
-                        dropdownValue = newValue;
-                      });
-                    },
-                    items: <String>[
-                      'BOX',
-                      '01',
-                      '02',
-                      '03',
-                      '04',
-                      '05',
-                      '06',
-                      '07',
-                      '08',
-                      '09',
-                      '10',
-                      '11',
-                      '12',
-                      '13',
-                      '14',
-                      '15',
-                      '16',
-                      '17',
-                      '18',
-                      '19',
-                      '20',
-                      '21',
-                      '22',
-                      '23',
-                      '24'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
+                  ],
                 ),
+                // Padding(
+                //   padding: EdgeInsets.only(right: 100.0),
+                // ),
+                Column(
+                  children: <Widget>[
+                    Container(
+                      width: 150.0,
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: dropdownValue1,
+                        //focusNode: _boxInputFocusNode,
+                        //icon: Icon(Icons.arrow_downward),
+                        //iconSize: 34,
+                        elevation: 16,
+                        hint: Text("Tipo de Veículo"),
+                        style: TextStyle(color: Colors.black, fontSize: 18),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.grey[400],
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropdownValue1 = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Tipo de Veículo',
+                          'Cavalo',
+                          'Carreta1',
+                          'Carreta2',
+                          'Dolly'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -421,6 +474,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.done,
                     onEditingComplete: _addPecas,
+
                     //enabled: textFormFieldEnabled,
                     //onTap: () => enableTextFormField(),
                     style: TextStyle(
