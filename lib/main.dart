@@ -23,7 +23,7 @@ class Pedidos extends StatefulWidget {
 final FocusNode _secondInputFocusNode = new FocusNode();
 final FocusNode _placaInputFocusNode = new FocusNode();
 final FocusNode _boxInputFocusNode = new FocusNode();
-String dropdownValue = "BOX";
+//String dropdownValue = "BOX";
 String dropdownValue1 = "Tipo de Veículo";
 var maskFormatter = new MaskTextInputFormatter(
     mask: '###-####', filter: {"#": RegExp(r'[0-9A-Z]')});
@@ -81,7 +81,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
   void _enviar() {
     if ((_usuarioController.text.isEmpty) ||
         (_placaController.text.isEmpty) ||
-        (dropdownValue == "BOX") ||
+        (_boxController.text.isEmpty) ||
         (dropdownValue1 == "Tipo de Veículo")) {
       Toast.show(
         "\n  Preencha todos os campos  \n",
@@ -140,7 +140,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                     // _dadosList.add(newDados);
                     newDados["placa"] = _placaController.text.trimLeft();
                     //_dadosList.add(newDados);
-                    newDados["box"] = dropdownValue;
+                    newDados["box"] = _boxController.text.trimLeft();
                     // _dadosList.add(newDados);
                     newDados["tipo_veiculo"] = dropdownValue1;
                     _dadosList.add(newDados);
@@ -180,7 +180,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                           print(_pecasList);
                           _pecasList.clear();
                           _placaController.clear();
-                          dropdownValue = "BOX";
+                          _boxController.clear();
                           dropdownValue1 = "Tipo de Veículo";
 
                           Navigator.of(context).pop();
@@ -332,56 +332,19 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                   children: <Widget>[
                     Container(
                       width: 150.0,
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        value: dropdownValue,
+                      child: TextFormField(
                         focusNode: _boxInputFocusNode,
-                        //icon: Icon(Icons.arrow_downward),
-                        //iconSize: 34,
-                        elevation: 16,
-                        hint: Text("BOX"),
-                        style: TextStyle(color: Colors.black, fontSize: 18),
-                        underline: Container(
-                          height: 2,
-                          color: Colors.grey[400],
+                        controller: _boxController,
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.next,
+                        // onEditingComplete: () => FocusScope.of(context).requestFocus(_boxInputFocusNode),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
                         ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            dropdownValue = newValue;
-                          });
-                        },
-                        items: <String>[
-                          'BOX',
-                          '01',
-                          '02',
-                          '03',
-                          '04',
-                          '05',
-                          '06',
-                          '07',
-                          '08',
-                          '09',
-                          '10',
-                          '11',
-                          '12',
-                          '13',
-                          '14',
-                          '15',
-                          '16',
-                          '17',
-                          '18',
-                          '19',
-                          '20',
-                          '21',
-                          '22',
-                          '23',
-                          '24'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                        decoration: InputDecoration(
+                          hintText: ("BOX"),
+                        ),
                       ),
                     ),
                   ],
@@ -474,7 +437,6 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.done,
                     onEditingComplete: _addPecas,
-
                     //enabled: textFormFieldEnabled,
                     //onTap: () => enableTextFormField(),
                     style: TextStyle(
