@@ -324,7 +324,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 0.0, 8.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -337,6 +337,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                         controller: _boxController,
                         keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.next,
+                        maxLength: 8,
                         // onEditingComplete: () => FocusScope.of(context).requestFocus(_boxInputFocusNode),
                         style: TextStyle(
                           color: Colors.black,
