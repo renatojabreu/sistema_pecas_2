@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:sistema_pecas_2/config.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -35,10 +36,20 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
   final _usuarioController = TextEditingController();
   final _placaController = TextEditingController();
   final _boxController = TextEditingController();
+  final _ipController = TextEditingController();
 
   List _pecasList = [];
   List _usuariosList = [];
   List _dadosList = [];
+
+  //Endereço do servidor
+  String ipServidor = ('webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2');
+  //('177.125.217.10:6598/');
+  //('webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2');
+//'http://webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2',
+  //'http://172.16.14.109:5000/',
+  //'http://177.125.217.10:6598/', //IP CERTO
+  //
 
   @override
   void initState() {
@@ -161,14 +172,15 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                     headers["Content-type"] = "application/json";
                     headers["Accept"] = "application/json";
                     //String str = '{"take":55, "skip":"0"}';
-                    final resp = await http.post(
+                    final resp = await http.post('http://' + ipServidor,
                         //'http://webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2',
                         //'http://172.16.14.109:5000/',
-                        'http://177.125.217.10:6598/', //IP CERTO
+                        //'http://177.125.217.10:6598/', //IP CERTO
                         //
                         body: jsonEncode(_dadosList +
                             _pecasList), //+ jsonEncode(_pecasList),
                         headers: headers);
+
                     print(resp.statusCode);
 
                     _dadosList
@@ -580,6 +592,61 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
           )
         ],
       ),
+      drawer: Drawer(
+          elevation: 20.0,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              AppBar(
+                backgroundColor: Colors.red,
+                title: Text("Configurações"),
+              ),
+              ListTile(
+                leading: Icon(Icons.network_wifi),
+                title: Text('IP atual: ' + ipServidor),
+                onTap: () {
+                  // This line code will close drawer programatically....
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings_applications),
+                title: Text("Alterar IP"),
+                onTap: () {},
+                onLongPress: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            title: new Text("INSIRA O NOVO IP:"),
+                            content: TextField(
+                              controller: _ipController,
+                              decoration: InputDecoration(hintText: "Novo IP"),
+                            ),
+                            actions: <Widget>[
+                              new FlatButton(
+                                  child: new Text("Salvar"),
+                                  onPressed: () {},
+                                  onLongPress: () {
+                                    setState(() {
+                                      ipServidor = (_ipController.text);
+                                      Navigator.of(context).pop();
+                                    });
+                                  }),
+                              new FlatButton(
+                                  child: new Text("Fechar"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }),
+                            ]);
+                      });
+                },
+              ),
+              Divider(
+                height: 2.0,
+              ),
+            ],
+          )),
     );
   }
 }
