@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:sistema_pecas_2/confirm_dialog.dart';
 import 'package:toast/toast.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -29,6 +30,7 @@ final FocusNode _boxInputFocusNode = new FocusNode();
 //String dropdownValue = "BOX";
 String dropdownValue1 = "Tipo de Veículo"; //teste
 //teste2
+//teste3
 var maskFormatter = new MaskTextInputFormatter(
     mask: '###-####', filter: {"#": RegExp(r'[0-9A-Z]')});
 
@@ -46,14 +48,9 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
   List _dadosList = [];
 
   //Endereço do servidor
-  String ipServidor = ('177.125.217.10:6598/');
-  //('webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2');
-  //('177.125.217.10:6598/');
-  //('webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2');
-//'http://webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2',
-  //'http://172.16.14.109:5000/',
-  //'http://177.125.217.10:6598/', //IP CERTO
-  //
+  String ipServidor = ('webhook.site/86f3f241-2ab6-4b3f-a4a2-8fe5edd6ad55');
+  // ('webhook.site/86f3f241-2ab6-4b3f-a4a2-8fe5edd6ad55'); //Webhook funcionando
+  //('177.125.217.10:6598/'); //IP correto
 
   @override
   void initState() {
@@ -80,7 +77,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
     }
   }
 
-  void _enviar() {
+  Future<void> _enviar() async {
     if ((_usuarioController.text.isEmpty) ||
         (_placaController.text.isEmpty) ||
         (_boxController.text.isEmpty) ||
@@ -107,126 +104,90 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                 ]);
           });
     } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: new Text("Deseja enviar os itens?"),
-            actions: <Widget>[
-              new FlatButton(
-                  child: new Text("Fechar"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }),
-              new FlatButton(
-                  child: new Text("Enviar"),
-                  //     onPressed: () {
-                  //       Map<String, String> headers = new Map<String, String>();
-                  //       headers["Content-type"] = "application/json";
-                  //       headers["Accept"] = "application/json";
-                  //       var resp = http.post('http://172.16.14.109:5000/',
-                  //           //'http://webhook.site/5aa630a9-78b9-45d1-b665-53adf33c1fe7',
-                  //           body: jsonEncode(_pecasList),
-                  //           headers: headers);
-                  //       print(resp);
-                  //       setState(() {
-                  //         print(_pecasList);
-                  //         //_pecasList.clear();
-                  //         Navigator.of(context).pop();
-                  //       });
-                  //     })
+      ConfirmAction action =
+          await ConfirmDialog(context, "Deseja enviar os itens?", "");
+      if (action == ConfirmAction.ACCEPT) {
+        Map<String, dynamic> newDados = Map(); //Adiciona o usuário
+        newDados["usuario"] = _usuarioController.text.trimLeft();
+        // _dadosList.add(newDados);
+        newDados["placa"] = _placaController.text.trimLeft();
+        //_dadosList.add(newDados);
+        newDados["box"] = _boxController.text.trimLeft();
+        // _dadosList.add(newDados);
+        newDados["tipo_veiculo"] = dropdownValue1;
+        _dadosList.add(newDados);
 
-                  onPressed: () async {
-                    Map<String, dynamic> newDados = Map(); //Adiciona o usuário
-                    newDados["usuario"] = _usuarioController.text.trimLeft();
-                    // _dadosList.add(newDados);
-                    newDados["placa"] = _placaController.text.trimLeft();
-                    //_dadosList.add(newDados);
-                    newDados["box"] = _boxController.text.trimLeft();
-                    // _dadosList.add(newDados);
-                    newDados["tipo_veiculo"] = dropdownValue1;
-                    _dadosList.add(newDados);
+        // _saveData();
+        print(_pecasList + _dadosList);
 
-                    // _saveData();
-                    print(_pecasList + _dadosList);
+        // Map<String, String> newPeca = Map<String, String>();
+        // int i = 0;
+        // int j = _pecasList.length;
+        // for (i = 0; i == j; i++) {
+        //   newPeca["title"] += _pecasList[i];
+        // }
 
-                    // Map<String, String> newPeca = Map<String, String>();
-                    // int i = 0;
-                    // int j = _pecasList.length;
-                    // for (i = 0; i == j; i++) {
-                    //   newPeca["title"] += _pecasList[i];
-                    // }
+        // print(_pecasList);
 
-                    // print(_pecasList);
+        Map<String, String> headers = new Map<String, String>();
+        headers["Content-type"] = "application/json";
+        headers["Accept"] = "application/json";
+        //String str = '{"take":55, "skip":"0"}';
+        final resp = await http.post('http://' + ipServidor,
+            body:
+                jsonEncode(_dadosList + _pecasList), //+ jsonEncode(_pecasList),
+            headers: headers);
 
-                    Map<String, String> headers = new Map<String, String>();
-                    headers["Content-type"] = "application/json";
-                    headers["Accept"] = "application/json";
-                    //String str = '{"take":55, "skip":"0"}';
-                    final resp = await http.post('http://' + ipServidor,
-                        //'http://webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2',
-                        //'http://172.16.14.109:5000/',
-                        //'http://177.125.217.10:6598/', //IP CERTO
-                        //
-                        body: jsonEncode(_dadosList +
-                            _pecasList), //+ jsonEncode(_pecasList),
-                        headers: headers);
+        print(resp.statusCode);
 
-                    print(resp.statusCode);
+        _dadosList
+            .clear(); //Limpa a lista de usuários para impedir de Fenviar mais de um
 
-                    _dadosList
-                        .clear(); //Limpa a lista de usuários para impedir de Fenviar mais de um
-                    print(resp.body);
-                    if (resp.statusCode == 200) {
-                      if (resp.body == "ok") {
-                        setState(() {
-                          print(_pecasList);
-                          _pecasList.clear();
-                          _placaController.clear();
-                          _boxController.clear();
-                          dropdownValue1 = "Tipo de Veículo";
-
-                          Navigator.of(context).pop();
-                        });
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                  title: new Text(
-                                      "Erro: entre em contato com o suporte."),
-                                  actions: <Widget>[
-                                    new FlatButton(
-                                        child: new Text("Fechar"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          Navigator.of(context).pop();
-                                        }),
-                                  ]);
-                            });
-                      }
-                    } else {
-                      print("erro de comunicação");
-                      Navigator.of(context).pop();
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                                title: new Text("Erro de comunicação."),
-                                actions: <Widget>[
-                                  new FlatButton(
-                                      child: new Text("Fechar"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      }),
-                                ]);
-                          });
-                    }
-                  })
-            ],
-          );
-        },
-      );
+        print(resp.body);
+        if (resp.statusCode == 200) {
+          if (resp.body == "ok") {
+            setState(() {
+              print(_pecasList);
+              _pecasList.clear();
+              _placaController.clear();
+              _boxController.clear();
+              dropdownValue1 = "Tipo de Veículo";
+              //Navigator.of(context).pop();
+            });
+          } else {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: new Text("Erro: entre em contato com o suporte."),
+                      actions: <Widget>[
+                        new FlatButton(
+                            child: new Text("Fechar"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              // Navigator.of(context).pop();
+                            }),
+                      ]);
+                });
+          }
+        } else {
+          print("erro de comunicação");
+          Navigator.of(context).pop();
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: new Text("Erro de comunicação."),
+                    actions: <Widget>[
+                      new FlatButton(
+                          child: new Text("Fechar"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
+                    ]);
+              });
+        }
+      }
     }
   }
 
@@ -397,36 +358,6 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
               ],
             ),
           ),
-
-// Padding(
-//             padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
-//             child: Row(
-//               children: <Widget>[
-//                 Expanded(
-//                   flex: 8,
-//                   child: TextFormField(
-//                     inputFormatters: [
-//                       new BlacklistingTextInputFormatter(new RegExp('[ ]'))
-//                     ],
-//                     controller: _boxController,
-//                     focusNode: _boxInputFocusNode,
-//                     keyboardType: TextInputType.text,
-//                     textInputAction: TextInputAction.next,
-//                     onEditingComplete: () => FocusScope.of(context)
-//                         .requestFocus(_secondInputFocusNode),
-//                     style: TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 18,
-//                     ),
-//                     decoration: InputDecoration(
-//                       hintText: ("Box"),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
