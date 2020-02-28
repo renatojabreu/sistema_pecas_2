@@ -27,7 +27,8 @@ final FocusNode _secondInputFocusNode = new FocusNode();
 final FocusNode _placaInputFocusNode = new FocusNode();
 final FocusNode _boxInputFocusNode = new FocusNode();
 //String dropdownValue = "BOX";
-String dropdownValue1 = "Tipo de Veículo";
+String dropdownValue1 = "Tipo de Veículo"; //teste
+//teste2
 var maskFormatter = new MaskTextInputFormatter(
     mask: '###-####', filter: {"#": RegExp(r'[0-9A-Z]')});
 
