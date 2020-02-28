@@ -7,11 +7,13 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:sistema_pecas_2/config.dart';
 
 void main() {
   runApp(MaterialApp(
     home: Pedidos(),
+    theme: ThemeData(
+        primarySwatch: Colors.blue,
+        iconTheme: IconThemeData(color: Colors.green)),
     debugShowCheckedModeBanner: false,
   ));
 }
@@ -43,7 +45,8 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
   List _dadosList = [];
 
   //Endereço do servidor
-  String ipServidor = ('webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2');
+  String ipServidor = ('177.125.217.10:6598/');
+  //('webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2');
   //('177.125.217.10:6598/');
   //('webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2');
 //'http://webhook.site/9794de73-a3f0-43d1-b97e-a6d4830731e2',
@@ -75,19 +78,6 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
       });
     }
   }
-
-  // bool textFormFieldEnabled = true;
-  // void enableTextFormField() {
-  //   setState(() {
-  //     textFormFieldEnabled = true;
-  //   });
-  // }
-
-  // void disableTextFormField() {
-  //   setState(() {
-  //     textFormFieldEnabled = false;
-  //   });
-  // }
 
   void _enviar() {
     if ((_usuarioController.text.isEmpty) ||

@@ -22,7 +22,7 @@ dependencies:
   path_provider: ^1.5.1
   http: ^0.12.0+2
   toast: ^0.1.5
-  mask_text_input_formatter: ^1.0.5
+  mask_text_input_formatter: ^1.0.6
   # flutter_launcher_icons: ^0.7.4
   get_ip: ^0.4.0
 
