@@ -192,27 +192,9 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
   }
 
   void _apagarTudo() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              title: new Text("Deseja limpar a lista?"),
-              actions: <Widget>[
-                new FlatButton(
-                    child: new Text("Fechar"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }),
-                new FlatButton(
-                    child: new Text("Limpar"),
-                    onPressed: () {
-                      setState(() {
-                        _pecasList.clear();
-                        Navigator.of(context).pop();
-                      });
-                    }),
-              ]);
-        });
+    setState(() {
+      _pecasList.clear();
+    });
   }
 
   @override
@@ -507,8 +489,12 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
-                      onPressed: () {
-                        _apagarTudo();
+                      onPressed: () async {
+                        ConfirmAction action = await ConfirmDialog(
+                            context, "Deseja remover todos os itens?", "");
+                        if (action == ConfirmAction.ACCEPT) {
+                          _apagarTudo();
+                        }
                       }))
             ],
           )
