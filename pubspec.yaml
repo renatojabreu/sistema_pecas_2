@@ -18,6 +18,7 @@ environment:
 
 dependencies:
   flutter:
+    
     sdk: flutter
   path_provider: ^1.5.1
   http: ^0.12.0+2
@@ -27,6 +28,7 @@ dependencies:
   get_ip: ^0.4.0
   bot_toast: ^2.3.0
   vibration: ^1.2.4
+  
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -53,6 +55,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/images/logo_hungaro_app.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
