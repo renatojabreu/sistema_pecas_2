@@ -136,10 +136,19 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
     });
   }
 
+  String mostraIpAtual(ipAtual) {
+    if (ipServidor == '177.125.217.10:6598/') {
+      ipAtual = 'Ip Padrão';
+    } else {
+      ipAtual = ipServidor;
+    }
+    return ipAtual;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       appBar: AppBar(
           title: Text(
             "Solicitação de Peças",
@@ -436,7 +445,7 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
               ),
               ListTile(
                 leading: Icon(Icons.network_wifi),
-                title: Text('IP atual: ' + ipServidor),
+                title: Text('IP atual: ' + mostraIpAtual(ipServidor)),
                 onTap: () {
                   // This line code will close drawer programatically....
                   Navigator.pop(context);
@@ -451,26 +460,28 @@ class _PedidosState extends State<Pedidos> with TickerProviderStateMixin {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                            title: new Text("INSIRA O NOVO IP:"),
+                            title: new Text("INSIRA O NOVO IP E PORTA"),
                             content: TextField(
                               controller: _ipController,
-                              decoration: InputDecoration(hintText: "Novo IP"),
+                              decoration: InputDecoration(
+                                  hintText: "000.000.000.00:0000"),
                             ),
                             actions: <Widget>[
-                              new FlatButton(
-                                  child: new Text("Salvar"),
-                                  onPressed: () {},
-                                  onLongPress: () {
-                                    setState(() {
-                                      ipServidor = (_ipController.text);
-                                      Navigator.of(context).pop();
-                                    });
-                                  }),
-                              new FlatButton(
-                                  child: new Text("Fechar"),
-                                  onPressed: () {
+                              FlatButton(
+                                child: new Text("Fechar"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              FlatButton(
+                                child: new Text("Salvar"),
+                                onPressed: () {
+                                  setState(() {
+                                    ipServidor = (_ipController.text);
                                     Navigator.of(context).pop();
-                                  }),
+                                  });
+                                },
+                              ),
                             ]);
                       });
                 },

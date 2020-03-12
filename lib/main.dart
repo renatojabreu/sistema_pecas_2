@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return BotToastInit(
       child: MaterialApp(
         navigatorObservers: [BotToastNavigatorObserver()],
-        title: "Lista de Pautas",
+        title: "Solicitação de Peças",
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
