@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     
-    sdk: flutter
+    sdk: flutter  
   path_provider: ^1.5.1
   http: ^0.12.0+2
   toast: ^0.1.5
@@ -29,6 +29,10 @@ dependencies:
   bot_toast: ^2.3.0
   vibration: ^1.2.4
   
+  dio: ^3.0.9
+  dio_http2_adapter: ^1.0.0
+  shared_preferences: ^0.5.6+3
+  rflutter_alert: ^1.0.3
 
 
   # The following adds the Cupertino Icons font to your application.

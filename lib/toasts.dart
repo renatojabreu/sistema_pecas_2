@@ -44,3 +44,13 @@ ShowToastBlank(BuildContext context) {
       align: Alignment(0, 0.2),
       backgroundColor: Colors.black45);
 }
+
+ShowToastLoginError(BuildContext context) {
+  Vibration.vibrate(duration: 300);
+  return BotToast.showText(
+      text: 'ERRO \n \n Usuário ou senha incorretos',
+      contentColor: Colors.red[300],
+      contentPadding: EdgeInsets.all(25.0),
+      align: Alignment(0, 0.2),
+      backgroundColor: Colors.black45);
+}
