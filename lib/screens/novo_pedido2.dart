@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 //import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:sistema_pecas_2/confirm_dialog.dart';
+import 'package:sistema_pecas_2/estragado_main.dart';
+import 'package:sistema_pecas_2/screens/login.dart';
 import 'package:sistema_pecas_2/toasts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'dart:async';
@@ -512,6 +514,20 @@ class _Pedidos2State extends State<Pedidos2> with TickerProviderStateMixin {
                 AppBar(
                   backgroundColor: Colors.red,
                   title: Text("Configurações"),
+                ),
+                ListTile(
+                  leading: Icon(Icons.remove_circle),
+                  title: Text('SAIR'),
+                  onTap: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.clear();
+                    setState(() {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => LoginScreen()));
+                    });
+
+                    // This line code will close drawer programatically....
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.network_wifi),

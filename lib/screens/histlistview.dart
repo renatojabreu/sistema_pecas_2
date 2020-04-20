@@ -176,7 +176,7 @@ class HistListView extends StatelessWidget {
         // print(itens);
         // ResponseOK[i] = jsonResponse1[i]['descricao'];
 
-        concatenate.write(jsonResponse1[i]['descricao'] + " \n\n ");
+        concatenate.write("\n" + jsonResponse1[i]['descricao'] + "\n");
         print(concatenate);
       }
 
@@ -184,6 +184,7 @@ class HistListView extends StatelessWidget {
           onlyOne: true,
           clickClose: true,
           crossPage: true,
+          textStyle: TextStyle(fontSize: 12, color: Colors.white),
           duration: Duration(seconds: 3),
           text: concatenate.toString(),
           contentColor: Colors.green,
@@ -261,21 +262,21 @@ class HistListView extends StatelessWidget {
           for (int i = 0; i < dataHolder.length; i++) {
             pedList.add(Ped.fromJson(dataHolder[0]));
           }
-          showDialog(
-              context: context,
-              barrierDismissible: true,
-              child: AlertDialog(
-                title: Text(pedList[counter].descricao),
-                content: Text((pedList[counter].descricao)),
-                actions: <Widget>[
-                  // FlatButton(
-                  //   child: Text("Okay"),
-                  //   onPressed: () {
-                  //     // Navigator.of(context).pop();
-                  //   },
-                  // )
-                ],
-              ));
+          // showDialog(
+          //     context: context,
+          //     barrierDismissible: true,
+          //     child: AlertDialog(
+          //       title: Text(pedList[counter].descricao),
+          //       content: Text((pedList[counter].descricao)),
+          //       actions: <Widget>[
+          //         // FlatButton(
+          //         //   child: Text("Okay"),
+          //         //   onPressed: () {
+          //         //     // Navigator.of(context).pop();
+          //         //   },
+          //         // )
+          //       ],
+          //     ));
         },
       );
 }
