@@ -5,65 +5,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sistema_pecas_2/objects/pedidos_itens.dart';
 
 import '../toasts.dart';
 
-class Hist {
-  //Classe para criar os itens
-  final String codPedido;
-  final String status;
-  final String statusDescricao;
-  final String usuario;
-  final String placa;
-  final String box;
-  final String tipoVeiculo;
-  final String dtCadastro;
-  final String hrCadastro;
-
-  Hist(
-      {this.codPedido,
-      this.status,
-      this.statusDescricao,
-      this.usuario,
-      this.placa,
-      this.box,
-      this.tipoVeiculo,
-      this.dtCadastro,
-      this.hrCadastro});
-
-  factory Hist.fromJson(Map<String, dynamic> json) {
-    return Hist(
-        codPedido: json['cod_pedido'],
-        status: json['status'],
-        statusDescricao: json['status_descricao'],
-        usuario: json['usuario'],
-        placa: json['placa'],
-        box: json['box'],
-        tipoVeiculo: json['tipo_veiculo'],
-        dtCadastro: json['dt_cadastro'],
-        hrCadastro: json['hr_cadastro']);
-  }
-}
-
 List dataHolder;
-
-class Ped {
-  //Classe para criar os itens
-  final String codPedido;
-  final String status;
-  final String statusDescricao;
-  final String descricao;
-
-  Ped({this.codPedido, this.status, this.statusDescricao, this.descricao});
-
-  factory Ped.fromJson(Map<String, dynamic> json) {
-    return Ped(
-        codPedido: json['cod_pedido'],
-        status: json['status'],
-        statusDescricao: json['status_descricao'],
-        descricao: json['descricao']);
-  }
-}
 
 class HistListView extends StatelessWidget {
   // BuildContext get context => null;
@@ -180,17 +126,17 @@ class HistListView extends StatelessWidget {
         print(concatenate);
       }
 
-      BotToast.showText(
-          onlyOne: true,
-          clickClose: true,
-          crossPage: true,
-          textStyle: TextStyle(fontSize: 12, color: Colors.white),
-          duration: Duration(seconds: 3),
-          text: concatenate.toString(),
-          contentColor: Colors.green,
-          contentPadding: EdgeInsets.all(25.0),
-          align: Alignment(0, 0),
-          backgroundColor: Colors.black38);
+      // BotToast.showText(
+      //     onlyOne: true,
+      //     clickClose: true,
+      //     crossPage: true,
+      //     textStyle: TextStyle(fontSize: 12, color: Colors.white),
+      //     duration: Duration(seconds: 3),
+      //     text: concatenate.toString(),
+      //     contentColor: Colors.green,
+      //     contentPadding: EdgeInsets.all(25.0),
+      //     align: Alignment(0, 0),
+      //     backgroundColor: Colors.black38);
 
       //print(ResponseOK.toString());
 
@@ -225,6 +171,10 @@ class HistListView extends StatelessWidget {
   }
 
   ListView _histListView(data) {
+    for (int i = 0; i < data.length - 1; i++) {
+      listOfPedLists.add(pedList);
+    }
+    print(listOfPedLists);
     return ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
@@ -244,39 +194,68 @@ class HistListView extends StatelessWidget {
         });
   }
 
+  List<Ped> listFromFuture = [];
+  List<List<Ped>> listOfPedLists = [];
+  populateUpperList(Future<List<Ped>> future) async {
+    listFromFuture = await future;
+    List<Ped> temp = await future;
+  }
+
   ListTile _tile(String title, String subtitle, IconData icon,
-          BuildContext context, int counter) =>
-      ListTile(
-        title: Text(title,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
-            )),
-        subtitle: Text(subtitle),
-        leading: Icon(
-          icon,
-          color: Colors.green[500],
-        ),
-        onTap: () {
-          _fetchPed(title);
-          for (int i = 0; i < dataHolder.length; i++) {
-            pedList.add(Ped.fromJson(dataHolder[0]));
-          }
-          // showDialog(
-          //     context: context,
-          //     barrierDismissible: true,
-          //     child: AlertDialog(
-          //       title: Text(pedList[counter].descricao),
-          //       content: Text((pedList[counter].descricao)),
-          //       actions: <Widget>[
-          //         // FlatButton(
-          //         //   child: Text("Okay"),
-          //         //   onPressed: () {
-          //         //     // Navigator.of(context).pop();
-          //         //   },
-          //         // )
-          //       ],
-          //     ));
-        },
-      );
+      BuildContext context, int counter) {
+    return ListTile(
+      title: Text(title,
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+          )),
+      subtitle: Text(subtitle),
+      leading: Icon(
+        icon,
+        color: Colors.green[500],
+      ),
+      onTap: () {
+        _fetchPed(title).then((List<Ped> list) {
+          showDialog(
+            context: context,
+            barrierDismissible: true,
+            child: Dialog(
+              backgroundColor: Colors.green[50],
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          dense: true,
+                          title: Text(list[index].descricao),
+                        );
+                      },
+                      itemCount: list.length,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: FlatButton(
+                        child: Text(
+                          "Voltar",
+                        ),
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true).pop(true);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+        // populateUpperList(_fetchPed(title));
+        // for (int i = 0; i < dataHolder.length; i++) {
+        //   listOfPedLists[counter].add(Ped.fromJson(dataHolder[i]));
+        // }
+      },
+    );
+  }
 }
