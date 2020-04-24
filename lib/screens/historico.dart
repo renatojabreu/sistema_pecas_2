@@ -78,7 +78,7 @@ class _HistoricoState extends State<Historico> {
               ),
               Expanded(
                   // padding: const EdgeInsets.all(8.0),
-                  child: HistListView()
+                  child: PedidoListView()
                   //
                   // ListView.builder(
                   //     itemCount: _pautasList.length,

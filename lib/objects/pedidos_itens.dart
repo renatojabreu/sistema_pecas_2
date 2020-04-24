@@ -1,4 +1,4 @@
-class Hist {
+class Pedido {
   //Classe para criar os itens
   final String codPedido;
   final String status;
@@ -10,7 +10,7 @@ class Hist {
   final String dtCadastro;
   final String hrCadastro;
 
-  Hist(
+  Pedido(
       {this.codPedido,
       this.status,
       this.statusDescricao,
@@ -21,8 +21,8 @@ class Hist {
       this.dtCadastro,
       this.hrCadastro});
 
-  factory Hist.fromJson(Map<String, dynamic> json) {
-    return Hist(
+  factory Pedido.fromJson(Map<String, dynamic> json) {
+    return Pedido(
         codPedido: json['cod_pedido'],
         status: json['status'],
         statusDescricao: json['status_descricao'],
@@ -35,17 +35,17 @@ class Hist {
   }
 }
 
-class Ped {
+class Itens {
   //Classe para criar os itens
   final String codPedido;
   final String status;
   final String statusDescricao;
   final String descricao;
 
-  Ped({this.codPedido, this.status, this.statusDescricao, this.descricao});
+  Itens({this.codPedido, this.status, this.statusDescricao, this.descricao});
 
-  factory Ped.fromJson(Map<String, dynamic> json) {
-    return Ped(
+  factory Itens.fromJson(Map<String, dynamic> json) {
+    return Itens(
         codPedido: json['cod_pedido'],
         status: json['status'],
         statusDescricao: json['status_descricao'],

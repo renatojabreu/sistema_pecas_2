@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +10,17 @@ import '../toasts.dart';
 
 List dataHolder;
 
-class HistListView extends StatelessWidget {
+class PedidoListView extends StatelessWidget {
   // BuildContext get context => null;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Hist>>(
-      future: _fetchHist(context),
+    return FutureBuilder<List<Pedido>>(
+      future: _fetchPedido(context),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List<Hist> data = snapshot.data;
-          return _histListView(data);
+          List<Pedido> data = snapshot.data;
+          return _pedidoListView(data);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
@@ -42,12 +41,12 @@ class HistListView extends StatelessWidget {
 
   // @override
   Widget build1(BuildContext context) {
-    return FutureBuilder<List<Ped>>(
-      future: _fetchPed(String),
+    return FutureBuilder<List<Itens>>(
+      future: _fetchItens(String),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List<Ped> data = snapshot.data;
-          return _pedListView(data);
+          List<Itens> data = snapshot.data;
+          return _itensListView(data);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
@@ -56,7 +55,7 @@ class HistListView extends StatelessWidget {
     );
   }
 
-  Future<List<Hist>> _fetchHist(BuildContext context) async {
+  Future<List<Pedido>> _fetchPedido(BuildContext context) async {
     //Classe para carregar os pedidos da api
     //
     final prefs = await SharedPreferences.getInstance(); //pega o usuário logado
@@ -73,23 +72,23 @@ class HistListView extends StatelessWidget {
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.data);
       print(response.data);
-      return jsonResponse.map((job) => new Hist.fromJson(job)).toList();
+      return jsonResponse.map((job) => new Pedido.fromJson(job)).toList();
     } else {
       throw Exception('Falha ao carregar histórico');
     }
   }
 
   List<dynamic> testList = [];
-  List<Ped> _pedList = new List<Ped>();
+  List<Itens> _pedList = new List<Itens>();
   sendListtoOtherPage(List<dynamic> jsonResponse1) {
-    for (Ped _pedItems in jsonResponse1) {
+    for (Itens _pedItems in jsonResponse1) {
       _pedList.add(_pedItems);
     }
     ;
   }
 
-  List<Ped> pedList = [];
-  Future<List<Ped>> _fetchPed(codPed) async {
+  List<Itens> pedList = [];
+  Future<List<Itens>> _fetchItens(codPed) async {
     final prefs = await SharedPreferences.getInstance(); //pega o usuário logado
     final key = 'usuario';
     final value = prefs.getString(key);
@@ -114,16 +113,16 @@ class HistListView extends StatelessWidget {
       // print(jsonResponse1[0]['descricao']);
       // print(jsonResponse1[1]['descricao']);
       // List ResponseOK;
-      var concatenate = StringBuffer();
+      //  var concatenate = StringBuffer();
       for (var i = 0; i < jsonResponse1.length; i++) {
         // print("BBB");
-        print(jsonResponse1[i]['descricao']);
+        // print(jsonResponse1[i]['descricao']);
         // List itens = jsonResponse1[i]['descricao'];
         // print(itens);
         // ResponseOK[i] = jsonResponse1[i]['descricao'];
 
-        concatenate.write("\n" + jsonResponse1[i]['descricao'] + "\n");
-        print(concatenate);
+        // concatenate.write("\n" + jsonResponse1[i]['descricao'] + "\n");
+        //  print(concatenate);
       }
 
       // BotToast.showText(
@@ -154,13 +153,13 @@ class HistListView extends StatelessWidget {
       // var usuarioLogado = decodedList[4];
       // print(varAut);
 
-      return jsonResponse1.map((job) => new Ped.fromJson(job)).toList();
+      return jsonResponse1.map((job) => new Itens.fromJson(job)).toList();
     } else {
       throw Exception('Falha ao carregar histórico');
     }
   }
 
-  ListView _pedListView(data) {
+  ListView _itensListView(data) {
     //itens do pedido
     return ListView.builder(
         itemCount: data.length,
@@ -170,7 +169,7 @@ class HistListView extends StatelessWidget {
         });
   }
 
-  ListView _histListView(data) {
+  ListView _pedidoListView(data) {
     for (int i = 0; i < data.length - 1; i++) {
       listOfPedLists.add(pedList);
     }
@@ -194,12 +193,8 @@ class HistListView extends StatelessWidget {
         });
   }
 
-  List<Ped> listFromFuture = [];
-  List<List<Ped>> listOfPedLists = [];
-  populateUpperList(Future<List<Ped>> future) async {
-    listFromFuture = await future;
-    List<Ped> temp = await future;
-  }
+  List<Itens> listFromFuture = [];
+  List<List<Itens>> listOfPedLists = [];
 
   ListTile _tile(String title, String subtitle, IconData icon,
       BuildContext context, int counter) {
@@ -215,40 +210,56 @@ class HistListView extends StatelessWidget {
         color: Colors.green[500],
       ),
       onTap: () {
-        _fetchPed(title).then((List<Ped> list) {
+        _fetchItens(title).then((List<Itens> list) {
           showDialog(
             context: context,
             barrierDismissible: true,
             child: Dialog(
               backgroundColor: Colors.green[50],
-              child: Center(
+              // child: Center(
+              child: SizedBox(
+                height: 450.0,
                 child: Column(
                   children: <Widget>[
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          dense: true,
-                          title: Text(list[index].descricao),
-                        );
-                      },
-                      itemCount: list.length,
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: FlatButton(
-                        child: Text(
-                          "Voltar",
-                        ),
-                        onPressed: () {
-                          Navigator.of(context, rootNavigator: true).pop(true);
+                    Expanded(
+                      flex: 9,
+                      child: ListView.builder(
+                        //shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            dense: true,
+                            title: Text(list[index].descricao),
+                            isThreeLine: false,
+                          );
                         },
+                        itemCount: list.length,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: FlatButton(
+                            color: Colors.green,
+                            child: Text(
+                              "Voltar",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true)
+                                  .pop(true);
+                            },
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
+            // ),
           );
         });
         // populateUpperList(_fetchPed(title));

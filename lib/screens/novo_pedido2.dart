@@ -529,48 +529,48 @@ class _Pedidos2State extends State<Pedidos2> with TickerProviderStateMixin {
                     // This line code will close drawer programatically....
                   },
                 ),
-                ListTile(
-                  leading: Icon(Icons.network_wifi),
-                  title: Text('IP atual: ' + mostraIpAtual(ipServidor)),
-                  onTap: () {
-                    // This line code will close drawer programatically....
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.settings_applications),
-                  title: Text("Alterar IP"),
-                  onTap: () {},
-                  onLongPress: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                              title: new Text("INSIRA O NOVO IP E PORTA"),
-                              content: TextField(
-                                controller: _ipController,
-                                decoration: InputDecoration(
-                                    hintText: "000.000.000.00:0000"),
-                              ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: new Text("Fechar"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                FlatButton(
-                                  child: new Text("Salvar"),
-                                  onPressed: () {
-                                    setState(() {
-                                      ipServidor = (_ipController.text);
-                                      Navigator.of(context).pop();
-                                    });
-                                  },
-                                ),
-                              ]);
-                        });
-                  },
-                ),
+                // ListTile(
+                //   leading: Icon(Icons.network_wifi),
+                //   title: Text('IP atual: ' + mostraIpAtual(ipServidor)),
+                //   onTap: () {
+                //     // This line code will close drawer programatically....
+                //   },
+                // ),
+                // ListTile(
+                //   leading: Icon(Icons.settings_applications),
+                //   title: Text("Alterar IP"),
+                //   onTap: () {},
+                //   onLongPress: () {
+                //     showDialog(
+                //         context: context,
+                //         builder: (BuildContext context) {
+                //           return AlertDialog(
+                //               title: new Text("INSIRA O NOVO IP E PORTA"),
+                //               content: TextField(
+                //                 controller: _ipController,
+                //                 decoration: InputDecoration(
+                //                     hintText: "000.000.000.00:0000"),
+                //               ),
+                //               actions: <Widget>[
+                //                 FlatButton(
+                //                   child: new Text("Fechar"),
+                //                   onPressed: () {
+                //                     Navigator.of(context).pop();
+                //                   },
+                //                 ),
+                //                 FlatButton(
+                //                   child: new Text("Salvar"),
+                //                   onPressed: () {
+                //                     setState(() {
+                //                       ipServidor = (_ipController.text);
+                //                       Navigator.of(context).pop();
+                //                     });
+                //                   },
+                //                 ),
+                //               ]);
+                //         });
+                //   },
+                // ),
                 Divider(height: 2.0),
               ],
             )),
