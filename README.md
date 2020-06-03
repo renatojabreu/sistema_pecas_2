@@ -2,12 +2,19 @@
 
 
 Projeto de um aplicativo em Flutter que recebe uma lista de peças informada pelo usuário e envia para um endereço http do servidor, que faz a impressão da lista.
+O aplicativo se comunica por APIs para fazer o login, enviar os pedidos para o servidor e visualizar o histórico de pedidos do usuário logado.
 
 
-O Aplicativo foi feito por mim e está sendo utilizado na empresa que eu trabalho.
+O Aplicativo foi feito por mim e está sendo utilizado na empresa onde eu trabalho.
 
+Tela de login:
+![pe1](https://user-images.githubusercontent.com/27299282/83663389-2bb6ba00-a59f-11ea-81ed-fc62e4f876a7.jpg)
 
-![pe1](https://user-images.githubusercontent.com/27299282/83662843-74ba3e80-a59e-11ea-8472-77af8300db25.jpg)
-![pe2](https://user-images.githubusercontent.com/27299282/83662846-75eb6b80-a59e-11ea-86b4-a6d65c7b8652.jpg)
-![pe3](https://user-images.githubusercontent.com/27299282/83662847-75eb6b80-a59e-11ea-98d2-f103f99fd87d.jpg)
-![pe4](https://user-images.githubusercontent.com/27299282/83662849-75eb6b80-a59e-11ea-90ed-1a5128508a6a.jpg)
+Tela inicial:
+![pe2](https://user-images.githubusercontent.com/27299282/83663392-2c4f5080-a59f-11ea-91d9-7ec236cf1e7e.jpg)
+
+Tela inicial com peças adicionadas:
+![pe3](https://user-images.githubusercontent.com/27299282/83663393-2ce7e700-a59f-11ea-99a0-24180104bd63.jpg)
+
+Tela de histórico de pedidos:
+![pe4](https://user-images.githubusercontent.com/27299282/83663397-2e191400-a59f-11ea-9b6b-111fb74be19b.jpg)
