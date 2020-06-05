@@ -151,14 +151,28 @@ class LoginScreen extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.all(10.0),
           children: <Widget>[
-            Opacity(
-              opacity: 0.85,
-              child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 4.0),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child:
-                          Image.asset('assets/images/logo_hungaro_app.png'))),
+            Container(
+              child: Center(
+                child: Opacity(
+                  opacity: 0.85,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 4.0),
+                    child: new Container(
+                        width: 180.0,
+                        height: 180.0,
+                        decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                                fit: BoxFit.fill,
+                                image: new AssetImage(
+                                    "assets/images/logo_hungaro_app.png")))),
+                    // ClipRRect(
+                    //   borderRadius: BorderRadius.circular(25.0),
+                    //   child: Image.asset('assets/images/logo_hungaro_app.png'),
+                    // ),
+                  ),
+                ),
+              ),
             ),
             TextFormField(
               controller: _usuarioController,

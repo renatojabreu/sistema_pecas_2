@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sistema_pecas_2/objects/pedidos_itens.dart';
 
@@ -40,20 +39,20 @@ class PedidoListView extends StatelessWidget {
   }
 
   // @override
-  Widget build1(BuildContext context) {
-    return FutureBuilder<List<Itens>>(
-      future: _fetchItens(String),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List<Itens> data = snapshot.data;
-          return _itensListView(data);
-        } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        }
-        return CircularProgressIndicator();
-      },
-    );
-  }
+  // Widget build1(BuildContext context) {
+  //   return FutureBuilder<List<Itens>>(
+  //     future: _fetchItens(String),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.hasData) {
+  //         List<Itens> data = snapshot.data;
+  //         return _itensListView(data);
+  //       } else if (snapshot.hasError) {
+  //         return Text("${snapshot.error}");
+  //       }
+  //       return CircularProgressIndicator();
+  //     },
+  //   );
+  // }
 
   Future<List<Pedido>> _fetchPedido(BuildContext context) async {
     //Classe para carregar os pedidos da api
@@ -78,14 +77,14 @@ class PedidoListView extends StatelessWidget {
     }
   }
 
-  List<dynamic> testList = [];
-  List<Itens> _pedList = new List<Itens>();
-  sendListtoOtherPage(List<dynamic> jsonResponse1) {
-    for (Itens _pedItems in jsonResponse1) {
-      _pedList.add(_pedItems);
-    }
-    ;
-  }
+  // List<dynamic> testList = [];
+  // List<Itens> _pedList = new List<Itens>();
+  // sendListtoOtherPage(List<dynamic> jsonResponse1) {
+  //   for (Itens _pedItems in jsonResponse1) {
+  //     _pedList.add(_pedItems);
+  //   }
+  //   ;
+  // }
 
   List<Itens> pedList = [];
   Future<List<Itens>> _fetchItens(codPed) async {
@@ -107,7 +106,7 @@ class PedidoListView extends StatelessWidget {
       // final decoded = json.decode(response.data);
       print("Below this is jsonresponse1");
       print(jsonResponse1);
-      testList.add(jsonResponse1);
+      // testList.add(jsonResponse1);
       dataHolder = jsonResponse1;
 
       // print(jsonResponse1[0]['descricao']);
@@ -159,21 +158,22 @@ class PedidoListView extends StatelessWidget {
     }
   }
 
-  ListView _itensListView(data) {
-    //itens do pedido
-    return ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          return _tile(data[index].descricao, data[index].statusDescricao,
-              Icons.settings, context, index);
-        });
-  }
+  // ListView _itensListView(data) {
+  //   //itens do pedido
+  //   return ListView.builder(
+  //       itemCount: data.length,
+  //       itemBuilder: (context, index) {
+  //         return _tile(data[index].descricao, data[index].statusDescricao,
+  //             Icons.settings, context, index);
+  //       });
+  // }
 
   ListView _pedidoListView(data) {
     for (int i = 0; i < data.length - 1; i++) {
-      listOfPedLists.add(pedList);
+      // listOfPedLists.add(pedList);
     }
-    print(listOfPedLists);
+    // print(listOfPedLists);
+    //print("list of pedlists acima");
     return ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
@@ -187,17 +187,18 @@ class PedidoListView extends StatelessWidget {
                   data[index].tipoVeiculo +
                   " " +
                   data[index].placa,
-              Icons.settings,
+              Icons.arrow_right,
               context,
               index);
         });
   }
 
-  List<Itens> listFromFuture = [];
-  List<List<Itens>> listOfPedLists = [];
+  // List<Itens> listFromFuture = [];
+  // List<List<Itens>> listOfPedLists = [];
 
   ListTile _tile(String title, String subtitle, IconData icon,
       BuildContext context, int counter) {
+    // if (title){}
     return ListTile(
       title: Text(title,
           style: TextStyle(
