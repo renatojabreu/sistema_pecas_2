@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 //import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:sistema_pecas_2/confirm_dialog.dart';
-import 'package:sistema_pecas_2/estragado_main.dart';
 import 'package:sistema_pecas_2/screens/login.dart';
 import 'package:sistema_pecas_2/toasts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -51,14 +50,6 @@ class _Pedidos2State extends State<Pedidos2> with TickerProviderStateMixin {
     String usu = value;
     return usu;
   }
-
-  // static getUsu() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   //Return String
-  //   String stringValue = prefs.getString('usuario');
-  //   return stringValue;
-
-  // }
 
   @override
   void initState() {
